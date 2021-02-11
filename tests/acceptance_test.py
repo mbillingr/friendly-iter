@@ -1,5 +1,6 @@
-from friendly_iter import Iterator
 import time
+
+from friendly_iter import Iterator
 
 
 def listify(x):
