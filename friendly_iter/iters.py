@@ -13,12 +13,15 @@ class Iterator:
 
     def map(self, func):
         self.iter = map(func, self.iter)
+        return self
 
     def filter(self, func):
         self.iter = filter(func, self.iter)
+        return self
 
     def flatten(self):
         self.iter = flatten(self.iter)
+        return self
 
     def __iter__(self):
         return self.iter
