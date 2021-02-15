@@ -174,7 +174,7 @@ class WorkCoordinator:
     def remaining_results(self):
         while self.active_workers > 0:
             y = self.collector.get()
-            if y == DONE_WORKER:
+            if is_signal(y, DONE_WORKER):
                 self.active_workers -= 1
             else:
                 yield y
@@ -184,13 +184,17 @@ def worker(pipeline, distributor, collector, i):
     def get():
         while True:
             x = distributor.get()
-            if x == STOP_WORKER:
+            if is_signal(x, STOP_WORKER):
                 return
             yield x
 
     for x in pipeline.apply(get()):
         collector.put(x)
     collector.put(DONE_WORKER)
+
+
+def is_signal(value, signal):
+    return isinstance(value, signal.__class__) and value == signal
 
 
 STOP_WORKER = b'STOP'
